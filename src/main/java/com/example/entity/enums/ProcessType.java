@@ -1,0 +1,13 @@
+package com.example.entity.enums;
+
+public enum ProcessType {
+   PLOT_CREATING,
+   CHARACTER_CREATING,
+   CHARACTER_DRAWING,
+   ABILITY_CREATING,
+   PAGE_CREATING,
+   PAGE_DRAWING,
+   PAGE_REFACTORING,
+   TEXT_WRITING,
+   TEXT_DRAWING;
+}
