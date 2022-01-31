@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ProcessRepository extends JpaRepository<Process, Long> {
     @Query(
-            value = "select p from process p " +
+            value = "select * from process p " +
             "join artists_processes ap on p.id = ap.process_id " +
             "join artist a on a.id = ap.artist_id " +
             "where a.worker_id = :workerId",
@@ -20,7 +20,7 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
     List<Process> findArtistProcessByWorkerId(@Param("workerId") Long workerId);
 
     @Query(
-            value = "select p from process p " +
+            value = "select * from process p " +
             "join screenwriters_processes sp on p.id = sp.process_id " +
             "join screenwriter s on s.id = sp.screenwriter_id " +
             "where s.worker_id = :workerId",
@@ -29,9 +29,11 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
     List<Process> findScreenwriterProcessByWorkerId(@Param("workerId") Long workerId);
 
     @Query(
-            value = "select p from process p where p.description = :description",
+            value = "select * from process p where p.description = :description",
             nativeQuery = true
     )
     Process findByDescription(
             @Param("description") String description);
+
+    void deleteById(Long id);
 }

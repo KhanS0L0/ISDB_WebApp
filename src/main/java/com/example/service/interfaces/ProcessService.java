@@ -2,17 +2,18 @@ package com.example.service.interfaces;
 
 import com.example.dto.PivotDTO.ProcessDTO;
 import com.example.entity.pivots.processes.Process;
+import com.example.exceptions.ProcessNotFoundException;
 
 import java.util.List;
 
 public interface ProcessService {
-    Process addProcess(ProcessDTO processDTO, Long workerId);
+    ProcessDTO addProcess(ProcessDTO processDTO, Long workerId);
 
-    List<Process> getAllProcesses(Long workerId);
+    List<ProcessDTO> getAllProcesses(Long workerId);
 
-    Process findByDescription(String description);
+    ProcessDTO findByDescription(String description);
 
-    Process findById(Long processId);
+    ProcessDTO findById(Long processId) throws ProcessNotFoundException;
 
-    void delete(Long workerId, Long processId);
+    boolean delete(Long workerId, Long processId);
 }

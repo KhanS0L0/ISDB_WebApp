@@ -80,12 +80,12 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public Long getUserId(String token){
-        return (Long) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("userId");
+    public Integer getUserId(String token){
+        return (Integer) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("userId");
     }
 
-    public Long getWorkerId(String token){
-        return (Long) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("workerId");
+    public Integer getWorkerId(String token){
+        return (Integer) Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("workerId");
     }
 
     public String resolveToken(HttpServletRequest request){

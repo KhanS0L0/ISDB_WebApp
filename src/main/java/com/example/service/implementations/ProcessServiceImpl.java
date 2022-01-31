@@ -5,6 +5,7 @@ import com.example.entity.pivots.processes.Process;
 import com.example.entity.pivots.worker.Artist;
 import com.example.entity.pivots.worker.Screenwriter;
 import com.example.entity.pivots.worker.Worker;
+import com.example.exceptions.ProcessNotFoundException;
 import com.example.repository.ArtistRepository;
 import com.example.repository.ProcessRepository;
 import com.example.repository.ScreenwriterRepository;
@@ -13,6 +14,7 @@ import com.example.service.interfaces.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public Process addProcess(ProcessDTO newProcess, Long workerId) {
+    public ProcessDTO addProcess(ProcessDTO newProcess, Long workerId) {
         String type = Process.isArtistOrScreenwriterProcess(newProcess);
         Worker worker = workerRepository.findById(workerId).orElse(null);
 
@@ -52,31 +54,47 @@ public class ProcessServiceImpl implements ProcessService {
                 process.setScreenwriters(Collections.singletonList(screenwriter));
             }
 
-            return processRepository.save(process);
+            // todo: первичный ключ почему-то дублируется
+            return new ProcessDTO().toProcessDTO(processRepository.save(process));
         }
         return null;
     }
 
     @Override
-    public List<Process> getAllProcesses(Long workerId){
+    public List<ProcessDTO> getAllProcesses(Long workerId){
         List<Process> processes = processRepository.findArtistProcessByWorkerId(workerId);
         processes.addAll(processRepository.findScreenwriterProcessByWorkerId(workerId));
-        return processes;
+
+        List<ProcessDTO> result = new ArrayList<>();
+        processes.forEach(process -> result.add(new ProcessDTO().toProcessDTO(process)));
+
+        return result;
     }
 
     @Override
-    public Process findByDescription(String description){
-        return processRepository.findByDescription(description);
+    public ProcessDTO findByDescription(String description){
+        ProcessDTO result = new ProcessDTO().toProcessDTO(processRepository.findByDescription(description));
+        return result;
     }
 
     @Override
-    public Process findById(Long processId) {
-        return processRepository.findById(processId).orElse(null);
+    public ProcessDTO findById(Long processId) throws ProcessNotFoundException {
+        Process process =  processRepository.findById(processId).orElse(null);
+        if(process == null)
+            throw new ProcessNotFoundException("Process with id: " + processId + " not found");
+        return new ProcessDTO().toProcessDTO(process);
     }
 
     @Override
-    public void delete(Long workerId, Long processId) {
-        List<Process> processes = this.getAllProcesses(workerId);
-        processes.stream().filter(p -> p.getId().equals(processId)).findAny().ifPresent(processRepository::delete);
+    public boolean delete(Long workerId, Long processId) {
+        List<ProcessDTO> processes = this.getAllProcesses(workerId);
+        int size_before = processes.size();
+        processes.stream().filter(p -> p.getId().equals(processId))
+                .findAny().ifPresent(processDTO -> processRepository.deleteById(processDTO.getId()));
+        int size_after = this.getAllProcesses(workerId).size();
+        if(size_before == size_after){
+            return false;
+        }
+        return true;
     }
 }
