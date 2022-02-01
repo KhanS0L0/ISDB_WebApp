@@ -50,7 +50,7 @@ public class ProcessController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteProcess(@RequestAttribute("workerId") Long workerId, @RequestAttribute("processId") Long processId){
+    public ResponseEntity deleteProcess(@RequestAttribute("workerId") Long workerId, @PathVariable("id") Long processId){
         if(processService.delete(workerId, processId)){
             return ResponseEntity.ok("Process with id: " + processId + " successfully deleted");
         }

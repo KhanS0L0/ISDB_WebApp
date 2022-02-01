@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -47,15 +46,17 @@ public class ProcessServiceImpl implements ProcessService {
             Process process = Process.create(newProcess);
 
             if(type.equals("Artist")){
-                Artist artist = artistRepository.findByWorker(worker);
-                process.setArtists(Collections.singletonList(artist));
+                List<Artist> artists = new ArrayList<>();
+                artists.add(artistRepository.findByWorker(worker));
+                process.setArtists(artists);
             }else if(type.equals("Screenwriter")){
-                Screenwriter screenwriter = screenwriterRepository.findByWorker(worker);
-                process.setScreenwriters(Collections.singletonList(screenwriter));
+                List<Screenwriter> screenwriters = new ArrayList<>();
+                screenwriters.add(screenwriterRepository.findByWorker(worker));
+                process.setScreenwriters(screenwriters);
             }
-
-            // todo: первичный ключ почему-то дублируется
-            return new ProcessDTO().toProcessDTO(processRepository.save(process));
+            process = processRepository.save(process);
+            System.out.println(process.getId());
+            return new ProcessDTO().toProcessDTO(process);
         }
         return null;
     }
@@ -73,8 +74,7 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public ProcessDTO findByDescription(String description){
-        ProcessDTO result = new ProcessDTO().toProcessDTO(processRepository.findByDescription(description));
-        return result;
+        return new ProcessDTO().toProcessDTO(processRepository.findByDescription(description));
     }
 
     @Override
@@ -92,9 +92,6 @@ public class ProcessServiceImpl implements ProcessService {
         processes.stream().filter(p -> p.getId().equals(processId))
                 .findAny().ifPresent(processDTO -> processRepository.deleteById(processDTO.getId()));
         int size_after = this.getAllProcesses(workerId).size();
-        if(size_before == size_after){
-            return false;
-        }
-        return true;
+        return size_before != size_after;
     }
 }

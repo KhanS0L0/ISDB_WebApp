@@ -77,8 +77,12 @@ public class Process {
         );
     }
 
-//    todo: можно перенести в отдельный метод в Enum.ProcessType
-//     чтобы при добавлении новых типов процессов не переписывать логику и проходиться по уже имеющимся enum'ам
+    /*
+     todo: перенести в отдельный метод в Enum.ProcessType
+      => при добавлении новых типов процессов не будет переписываться логика метода
+      => проходиться по уже имеющимся перечислениям
+    */
+
     public static String isArtistOrScreenwriterProcess(ProcessDTO processDTO){
         String type = processDTO.getProcessType();
         if(type != null && (

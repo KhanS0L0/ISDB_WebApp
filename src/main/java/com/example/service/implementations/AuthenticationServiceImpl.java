@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -49,7 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
-            //todo  !!! response.put("processes", getAvailableProcesses(user.getId()); !!!
 
             return response;
 
@@ -57,10 +55,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
-
-//    @Override
-//    public Map<String, List<String>> getAvailableProcesses(Long userId) {
-//        todo: после аутентификации / авторизации надо вернуть все доступные для пользователя процессы по его id
-//        return null;
-//    }
 }
