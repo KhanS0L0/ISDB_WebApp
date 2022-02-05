@@ -14,11 +14,11 @@ public class Artist {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "WORKER_ID", referencedColumnName = "ID")
     private Worker worker;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "ARTISTS_PROCESSES",
             joinColumns = @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID"),

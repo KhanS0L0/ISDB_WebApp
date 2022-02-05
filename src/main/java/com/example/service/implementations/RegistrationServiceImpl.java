@@ -25,8 +25,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     public RegistrationServiceImpl(UserService userService,
-                                   RoleRepository roleRepository,
-                                   WorkerRepository workerRepository, ArtistRepository artistRepository, ScreenwriterRepository screenwriterRepository) {
+                                   WorkerRepository workerRepository,
+                                   ArtistRepository artistRepository,
+                                   ScreenwriterRepository screenwriterRepository) {
         this.userService = userService;
         this.workerRepository = workerRepository;
         this.artistRepository = artistRepository;

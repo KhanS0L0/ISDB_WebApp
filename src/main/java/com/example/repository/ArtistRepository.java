@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Artist findByWorker(Worker worker);
+
+    Artist findByWorkerId(Long workerId);
 }

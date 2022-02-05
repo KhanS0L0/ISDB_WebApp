@@ -1,5 +1,7 @@
 package com.example.dto.PivotDTO;
 
+import com.example.entity.enums.ProcessStatus;
+import com.example.entity.enums.ProcessType;
 import com.example.entity.pivots.processes.Process;
 import lombok.Data;
 
@@ -38,6 +40,19 @@ public class ProcessDTO {
                 this.beginDate = process.getBeginDate(),
                 this.deadline = process.getDeadline()
         );
+    }
+
+    public void checkFields(ProcessDTO updatedProcess){
+        if(updatedProcess.getProcessType() != null && !updatedProcess.getProcessType().isEmpty())
+            this.setProcessType(updatedProcess.getProcessType());
+        if(updatedProcess.getProcessStatus() != null && !updatedProcess.getProcessStatus().isEmpty())
+            this.setProcessStatus(updatedProcess.getProcessStatus());
+        if(updatedProcess.getDescription() != null && !updatedProcess.getDescription().isEmpty())
+            this.setDescription(updatedProcess.getDescription());
+        if(updatedProcess.getBeginDate() != null)
+            this.setBeginDate(updatedProcess.getBeginDate());
+        if(updatedProcess.getDeadline() != null)
+            this.setDeadline(updatedProcess.getDeadline());
     }
 
 }

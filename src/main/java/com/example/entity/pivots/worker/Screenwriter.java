@@ -16,11 +16,11 @@ public class Screenwriter {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "WORKER_ID", referencedColumnName = "ID")
     private Worker worker;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "SCREENWRITERS_PROCESSES",
             joinColumns = @JoinColumn(name = "SCREENWRITER_ID", referencedColumnName = "ID"),

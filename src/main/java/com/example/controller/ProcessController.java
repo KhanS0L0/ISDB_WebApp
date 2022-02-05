@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import com.example.dto.PivotDTO.JoinDTO;
 import com.example.dto.PivotDTO.ProcessDTO;
+import com.example.exceptions.ArtistNotFoundException;
 import com.example.exceptions.ProcessNotFoundException;
+import com.example.exceptions.ScreenwriterNotFoundException;
 import com.example.service.interfaces.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +50,38 @@ public class ProcessController {
             return ResponseEntity.status(HttpStatus.CREATED).body(processDTO);
         }
         return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Failed to create process");
+    }
+
+    @PostMapping(path = "/joinArtist", produces = "application/json")
+    public ResponseEntity joinArtist(@RequestBody JoinDTO joinDTO){
+        try {
+            processService.addArtist(joinDTO.getWorkerId(), joinDTO.getProcessId());
+            return ResponseEntity.ok("Worker with id: " + joinDTO.getWorkerId() + " successfully added to process");
+        } catch (ArtistNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/joinScreenwriter", produces = "application/json")
+    public ResponseEntity joinScreenwriter(@RequestBody JoinDTO joinDTO){
+        try{
+            processService.addScreenwriter(joinDTO.getWorkerId(), joinDTO.getProcessId());
+            return ResponseEntity.ok("Worker with id: " + joinDTO.getWorkerId() + " successfully added to process");
+        }catch (ScreenwriterNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity updateProcess(@PathVariable("id") Long processId,
+                                        @RequestAttribute("workerId") Long workerId,
+                                        @RequestBody ProcessDTO processDTO){
+        try {
+            processService.update(workerId, processId, processDTO);
+            return ResponseEntity.ok("Process with id " + processId + " successfully updated");
+        } catch (ProcessNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "/{id}")

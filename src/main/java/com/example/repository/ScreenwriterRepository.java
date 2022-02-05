@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ScreenwriterRepository extends JpaRepository<Screenwriter, Long> {
     Screenwriter findByWorker(Worker worker);
+
+    Screenwriter findByWorkerId(Long workerId);
 }

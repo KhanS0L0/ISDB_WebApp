@@ -5,7 +5,9 @@ import com.example.entity.pivots.processes.Process;
 import com.example.entity.pivots.worker.Artist;
 import com.example.entity.pivots.worker.Screenwriter;
 import com.example.entity.pivots.worker.Worker;
+import com.example.exceptions.ArtistNotFoundException;
 import com.example.exceptions.ProcessNotFoundException;
+import com.example.exceptions.ScreenwriterNotFoundException;
 import com.example.repository.ArtistRepository;
 import com.example.repository.ProcessRepository;
 import com.example.repository.ScreenwriterRepository;
@@ -55,7 +57,6 @@ public class ProcessServiceImpl implements ProcessService {
                 process.setScreenwriters(screenwriters);
             }
             process = processRepository.save(process);
-            System.out.println(process.getId());
             return new ProcessDTO().toProcessDTO(process);
         }
         return null;
@@ -86,12 +87,59 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
+    public ProcessDTO findById(Long workerId, Long processId) throws ProcessNotFoundException {
+        List<ProcessDTO> processes = this.getAllProcesses(workerId);
+        ProcessDTO result = processes.stream().filter(processDTO -> processDTO.getId().equals(processId)).findFirst().orElse(null);
+        if(result == null)
+            throw new ProcessNotFoundException("Process with id: " + processId + " not found");
+        return result;
+    }
+
+    @Override
+    public void addArtist(Long workerId, Long processId) throws ArtistNotFoundException {
+        Artist artist = artistRepository.findByWorkerId(workerId);
+        if(artist == null)
+            throw new ArtistNotFoundException("Worker with id: " + workerId + " is not an artist");
+        processRepository.joinArtist(artist.getId(), processId);
+    }
+
+    @Override
+    public void addScreenwriter(Long workerId, Long processId) throws ScreenwriterNotFoundException {
+        Screenwriter screenwriter = screenwriterRepository.findByWorkerId(workerId);
+        if(screenwriter == null)
+            throw new ScreenwriterNotFoundException("Worker with id: " + workerId + " is not a screenwriter");
+        processRepository.joinScreenwriter(screenwriter.getId(), processId);
+    }
+
+    @Override
+    public void update(Long workerId, Long processId, ProcessDTO processDTO) throws ProcessNotFoundException {
+        ProcessDTO process = this.findById(workerId, processId);
+        process.checkFields(processDTO);
+        processRepository.setProcessInfoById(
+                process.getId(),
+                process.getProcessType(),
+                process.getProcessStatus(),
+                process.getDescription(),
+                process.getBeginDate(),
+                process.getDeadline()
+        );
+    }
+
+    @Override
     public boolean delete(Long workerId, Long processId) {
         List<ProcessDTO> processes = this.getAllProcesses(workerId);
-        int size_before = processes.size();
-        processes.stream().filter(p -> p.getId().equals(processId))
-                .findAny().ifPresent(processDTO -> processRepository.deleteById(processDTO.getId()));
-        int size_after = this.getAllProcesses(workerId).size();
-        return size_before != size_after;
+        ProcessDTO deletedProcess = processes.stream().filter(process -> process.getId().equals(processId)).findFirst().orElse(null);
+        if (deletedProcess != null) {
+            String type = Process.isArtistOrScreenwriterProcess(deletedProcess);
+            if(type.equals("Artist")){
+                processRepository.deleteFromArtist(processId);
+                processRepository.deleteById(processId);
+            }else if(type.equals("Screenwriter")){
+                processRepository.deleteFromScreenwriters(processId);
+                processRepository.deleteById(processId);
+            }
+            return !processRepository.findById(processId).isPresent();
+        }
+        return false;
     }
 }
