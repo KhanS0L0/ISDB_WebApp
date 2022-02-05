@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.dto.PivotDTO.JoinDTO;
-import com.example.dto.PivotDTO.ProcessDTO;
+import com.example.dto.AuthRegDTO.JoinDTO;
+import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.exceptions.ArtistNotFoundException;
 import com.example.exceptions.ProcessNotFoundException;
 import com.example.exceptions.ScreenwriterNotFoundException;

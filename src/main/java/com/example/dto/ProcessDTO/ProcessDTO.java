@@ -1,7 +1,5 @@
-package com.example.dto.PivotDTO;
+package com.example.dto.ProcessDTO;
 
-import com.example.entity.enums.ProcessStatus;
-import com.example.entity.enums.ProcessType;
 import com.example.entity.pivots.processes.Process;
 import lombok.Data;
 

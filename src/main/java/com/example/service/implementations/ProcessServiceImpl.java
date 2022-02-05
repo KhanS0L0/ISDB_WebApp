@@ -1,6 +1,6 @@
 package com.example.service.implementations;
 
-import com.example.dto.PivotDTO.ProcessDTO;
+import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.entity.pivots.processes.Process;
 import com.example.entity.pivots.worker.Artist;
 import com.example.entity.pivots.worker.Screenwriter;

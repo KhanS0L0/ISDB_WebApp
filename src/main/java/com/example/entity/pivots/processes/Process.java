@@ -1,6 +1,6 @@
 package com.example.entity.pivots.processes;
 
-import com.example.dto.PivotDTO.ProcessDTO;
+import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.entity.enums.ProcessStatus;
 import com.example.entity.enums.ProcessType;
 import com.example.entity.pivots.worker.Artist;

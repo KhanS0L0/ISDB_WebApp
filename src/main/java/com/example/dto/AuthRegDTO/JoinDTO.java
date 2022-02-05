@@ -1,4 +1,4 @@
-package com.example.dto.PivotDTO;
+package com.example.dto.AuthRegDTO;
 
 import lombok.Data;
 

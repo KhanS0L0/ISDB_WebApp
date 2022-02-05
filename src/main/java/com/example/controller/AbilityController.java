@@ -1,20 +1,15 @@
 package com.example.controller;
 
 import com.example.dto.PivotDTO.AbilityDTO;
-import com.example.dto.PivotDTO.ProcessDTO;
+import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.exceptions.AbilityAlreadyExistException;
 import com.example.service.interfaces.AbilityService;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ability")
