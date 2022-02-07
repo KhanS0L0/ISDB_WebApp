@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.dto.AuthRegDTO.JoinDTO;
+import com.example.dto.JoinDTO;
 import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.exceptions.ArtistNotFoundException;
 import com.example.exceptions.ProcessNotFoundException;
@@ -39,7 +39,7 @@ public class ProcessController {
             ProcessDTO response = processService.findById(processId);
             return ResponseEntity.ok(response);
         }catch(ProcessNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Process with id: " + processId + " not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -55,8 +55,8 @@ public class ProcessController {
     @PostMapping(path = "/joinArtist", produces = "application/json")
     public ResponseEntity joinArtist(@RequestBody JoinDTO joinDTO){
         try {
-            processService.addArtist(joinDTO.getWorkerId(), joinDTO.getProcessId());
-            return ResponseEntity.ok("Worker with id: " + joinDTO.getWorkerId() + " successfully added to process");
+            processService.addArtist(joinDTO.getFirstId(), joinDTO.getSecondId());
+            return ResponseEntity.ok("Worker with id: " + joinDTO.getFirstId() + " successfully added to process");
         } catch (ArtistNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -65,8 +65,8 @@ public class ProcessController {
     @PostMapping(path = "/joinScreenwriter", produces = "application/json")
     public ResponseEntity joinScreenwriter(@RequestBody JoinDTO joinDTO){
         try{
-            processService.addScreenwriter(joinDTO.getWorkerId(), joinDTO.getProcessId());
-            return ResponseEntity.ok("Worker with id: " + joinDTO.getWorkerId() + " successfully added to process");
+            processService.addScreenwriter(joinDTO.getFirstId(), joinDTO.getSecondId());
+            return ResponseEntity.ok("Worker with id: " + joinDTO.getFirstId() + " successfully added to process");
         }catch (ScreenwriterNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -84,7 +84,7 @@ public class ProcessController {
         }
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity deleteProcess(@RequestAttribute("workerId") Long workerId, @PathVariable("id") Long processId){
         if(processService.delete(workerId, processId)){
             return ResponseEntity.ok("Process with id: " + processId + " successfully deleted");

@@ -51,6 +51,7 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
             @Param("deadline") Timestamp deadline);
 
     @Modifying
+    @Transactional
     @Query(value = "delete from artists_processes where process_id = :id", nativeQuery = true)
     void deleteFromArtist(@Param("id") Long processId);
 

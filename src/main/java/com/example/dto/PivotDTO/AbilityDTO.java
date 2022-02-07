@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AbilityDTO {
     private Long id;
     private String type;
@@ -13,19 +14,25 @@ public class AbilityDTO {
 
     public Ability toAbility(){
         Ability ability = new Ability();
-        ability.setId(this.id);
-        ability.setDescription(this.description);
+        ability.setId(this.getId());
+        ability.setDescription(this.getDescription());
         ability.setAbilityType(AbilityType.valueOf(this.type));
         return ability;
     }
 
     public static AbilityDTO fromAbility(Ability ability){
         AbilityDTO abilityDTO = new AbilityDTO();
-        abilityDTO.setId(abilityDTO.getId());
-        abilityDTO.setDescription(abilityDTO.getDescription());
+        abilityDTO.setId(ability.getId());
+        abilityDTO.setDescription(ability.getDescription());
         abilityDTO.setType(ability.getAbilityType().name());
         return abilityDTO;
     }
 
+    public void checkFields(AbilityDTO updatedAbility){
+        if(updatedAbility.getType() != null && !updatedAbility.getType().isEmpty())
+            this.setType(updatedAbility.getType());
+        if(updatedAbility.getDescription() != null && !updatedAbility.getDescription().isEmpty())
+            this.setDescription(updatedAbility.getDescription());
+    }
 
 }

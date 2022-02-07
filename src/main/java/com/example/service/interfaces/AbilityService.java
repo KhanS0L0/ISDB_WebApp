@@ -4,6 +4,7 @@ import com.example.dto.PivotDTO.AbilityDTO;
 import com.example.entity.enums.AbilityType;
 import com.example.entity.pivots.characters.Ability;
 import com.example.exceptions.AbilityAlreadyExistException;
+import com.example.exceptions.AbilityNotFoundException;
 
 import java.util.List;
 
@@ -13,10 +14,12 @@ public interface AbilityService {
 
     List<AbilityDTO> getAll();
 
-    AbilityDTO findById(Long abilityId);
+    AbilityDTO findById(Long abilityId) throws AbilityNotFoundException;
 
     List<AbilityDTO> findAllByType(String abilityType);
 
-    boolean delete(Long abilityId);
+    void update(Long abilityId, AbilityDTO updatedAbility) throws AbilityNotFoundException;
+
+    void delete(Long abilityId) throws AbilityNotFoundException;
 
 }

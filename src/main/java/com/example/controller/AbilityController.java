@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.dto.PivotDTO.AbilityDTO;
-import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.exceptions.AbilityAlreadyExistException;
+import com.example.exceptions.AbilityNotFoundException;
 import com.example.service.interfaces.AbilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ability")
+@RequestMapping("/api/abilities")
 public class AbilityController {
 
     private final AbilityService abilityService;
@@ -22,12 +22,29 @@ public class AbilityController {
         this.abilityService = abilityService;
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/all", produces = "application/json")
     public ResponseEntity getAllAbilities(){
-        List<AbilityDTO> abilities = abilityService.getAll();
-        if(abilities.size() == 0){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No abilities were found");
+        List<AbilityDTO> response = abilityService.getAll();
+        if(response.size() == 0)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Abilities do not exist");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/id/{id}", produces = "application/json")
+    public ResponseEntity getAbility(@PathVariable("id") Long abilityId){
+        try{
+            AbilityDTO abilityDTO = abilityService.findById(abilityId);
+            return ResponseEntity.ok(abilityDTO);
+        }catch (AbilityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping(path = "/type/{type}", produces = "application/json")
+    public ResponseEntity getAbilityByType(@PathVariable("type") String type){
+        List<AbilityDTO> abilities = abilityService.findAllByType(type);
+        if(abilities.size() == 0)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Abilities with type: " + type + " do not exist");
         return ResponseEntity.ok(abilities);
     }
 
@@ -35,34 +52,31 @@ public class AbilityController {
     public ResponseEntity createAbility(@RequestBody AbilityDTO abilityDTO){
         try {
             abilityDTO = abilityService.addAbility(abilityDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(abilityDTO);
+            if(abilityDTO != null && abilityDTO.getId() != null)
+                return ResponseEntity.status(HttpStatus.CREATED).body(abilityDTO);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Failed to create ability");
         } catch (AbilityAlreadyExistException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
         }
     }
 
-    @PostMapping(path = "/test", produces = "application/json")
-    public void test(@RequestAttribute("username") String username,
-                     @RequestAttribute("userId") Long userId,
-                     @RequestAttribute("workerId") Long workerId,
-                     @RequestBody ProcessDTO processDTO
-//                   @RequestAttribute("abilityDTO") AbilityDTO abilityDTO
-    ){
-        System.out.println("USERNAME: " + username);
-        System.out.println("USER_ID: " + userId);
-        System.out.println("WORKER_ID: " + workerId);
-        System.out.println("PROCESS_DTO: " + processDTO.toString());
-//        System.out.println("ABILITY_DTO" + abilityDTO.toString());
+    @PatchMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity updateAbility(@PathVariable("id") Long abilityId, @RequestBody AbilityDTO abilityDTO){
+        try {
+            abilityService.update(abilityId, abilityDTO);
+            return ResponseEntity.ok("Ability with id: " + abilityId + " successfully updated");
+        } catch (AbilityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-//    @PostMapping(path = "/test", produces = "application/json")
-//    public void test(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException{
-//
-//        Map<String, Object> jsonToMap = new ObjectMapper().readValue(json, Map.class);
-//        ProcessDTO temp1 = (ProcessDTO) jsonToMap.get("processDTO");
-//        AbilityDTO temp2 = (AbilityDTO) jsonToMap.get("abilityDTO");
-//        System.out.println("PROCESS_DTO" + temp1.toString());
-//        System.out.println("ABILITY_DTO" + temp2.toString());
-//    }
-
+    @DeleteMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity deleteAbility(@PathVariable("id") Long abilityId){
+        try {
+            abilityService.delete(abilityId);
+            return ResponseEntity.ok("Ability with id: " + abilityId + " successfully deleted");
+        } catch (AbilityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
+        }
+    }
 }
