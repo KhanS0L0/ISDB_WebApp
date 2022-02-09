@@ -1,8 +1,6 @@
 package com.example.service.interfaces;
 
 import com.example.dto.PivotDTO.AbilityDTO;
-import com.example.entity.enums.AbilityType;
-import com.example.entity.pivots.characters.Ability;
 import com.example.exceptions.AbilityAlreadyExistException;
 import com.example.exceptions.AbilityNotFoundException;
 

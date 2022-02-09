@@ -3,6 +3,7 @@ package com.example.entity.pivots.processes;
 import com.example.dto.ProcessDTO.ProcessDTO;
 import com.example.entity.enums.ProcessStatus;
 import com.example.entity.enums.ProcessType;
+import com.example.entity.pivots.characters.Characters;
 import com.example.entity.pivots.worker.Artist;
 import com.example.entity.pivots.worker.Screenwriter;
 import lombok.Data;
@@ -52,6 +53,14 @@ public class Process {
             inverseJoinColumns = @JoinColumn(name = "SCREENWRITER_ID", referencedColumnName = "ID")
     )
     private List<Screenwriter> screenwriters;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "PROCESSES_CHARACTERS",
+//            joinColumns = @JoinColumn(name = "PROCESS_ID", referencedColumnName = "ID"),
+//            inverseJoinColumns = @JoinColumn(name = "CHARACTER_ID", referencedColumnName = "ID")
+//    )
+//    private List<Characters> characters;
 
     public Process(){}
 

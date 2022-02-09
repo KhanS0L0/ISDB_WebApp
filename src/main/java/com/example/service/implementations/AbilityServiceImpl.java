@@ -26,9 +26,8 @@ public class AbilityServiceImpl implements AbilityService {
     @Override
     public AbilityDTO addAbility(AbilityDTO abilityDTO) throws AbilityAlreadyExistException {
         Ability ability = abilityRepository.findByDescription(abilityDTO.getDescription()).orElse(null);
-        if (ability != null) {
+        if (ability != null)
             throw new AbilityAlreadyExistException("Ability already exists");
-        }
         ability = abilityRepository.save(abilityDTO.toAbility());
         return AbilityDTO.fromAbility(ability);
     }
@@ -44,9 +43,8 @@ public class AbilityServiceImpl implements AbilityService {
     @Override
     public AbilityDTO findById(Long abilityId) throws AbilityNotFoundException {
         Ability ability = abilityRepository.findById(abilityId).orElse(null);
-        if(ability == null){
+        if(ability == null)
             throw new AbilityNotFoundException("Ability with id: " + abilityId + " not found");
-        }
         return AbilityDTO.fromAbility(ability);
     }
 
@@ -68,9 +66,8 @@ public class AbilityServiceImpl implements AbilityService {
     @Override
     public void delete(Long abilityId) throws AbilityNotFoundException {
         Ability ability = abilityRepository.findById(abilityId).orElse(null);
-        if(ability == null || ability.getId() == null){
+        if(ability == null || ability.getId() == null)
             throw new AbilityNotFoundException("Ability with id: " + abilityId + " not found");
-        }
         abilityRepository.deleteById(abilityId);
         abilityRepository.deleteFromCharacterTable(abilityId);
     }

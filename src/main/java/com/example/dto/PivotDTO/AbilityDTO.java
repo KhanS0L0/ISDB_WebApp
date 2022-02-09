@@ -2,11 +2,9 @@ package com.example.dto.PivotDTO;
 
 import com.example.entity.enums.AbilityType;
 import com.example.entity.pivots.characters.Ability;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class AbilityDTO {
     private Long id;
     private String type;
