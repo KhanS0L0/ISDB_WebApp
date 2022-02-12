@@ -1,4 +1,4 @@
-package com.example.exceptions;
+package com.example.exceptions.notFoundExceptions;
 
 public class ArtistNotFoundException extends Exception {
     public ArtistNotFoundException(String message) {

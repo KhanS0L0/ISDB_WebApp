@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.dto.AuthRegDTO.RegRequestDTO;
-import com.example.exceptions.UserAlreadyExistsException;
+import com.example.exceptions.alreadyExistExceptions.UserAlreadyExistsException;
 import com.example.service.interfaces.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

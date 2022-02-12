@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.entity.pivots.characters.Characters;
 import com.example.entity.pivots.plot.Genres;
 import com.example.entity.pivots.plot.Plot;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,10 @@ public interface PlotRepository extends JpaRepository<Plot, Long> {
     Optional<Plot> findById(Long plotId);
 
     Optional<Plot> findByDescription(String description);
+
+    @Transactional
+    @Query(value = "select * from characters join plots_characters pc on characters.id = pc.character_id where plot_id = :id", nativeQuery = true)
+    List<Characters> findAllCharacter(@Param("id") Long plotId);
 
     @Modifying
     @Transactional

@@ -3,8 +3,8 @@ package com.example.service.implementations;
 import com.example.dto.PivotDTO.AbilityDTO;
 import com.example.entity.enums.AbilityType;
 import com.example.entity.pivots.characters.Ability;
-import com.example.exceptions.AbilityAlreadyExistException;
-import com.example.exceptions.AbilityNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.AbilityAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.AbilityNotFoundException;
 import com.example.repository.AbilityRepository;
 import com.example.service.interfaces.AbilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +65,7 @@ public class AbilityServiceImpl implements AbilityService {
 
     @Override
     public void delete(Long abilityId) throws AbilityNotFoundException {
-        Ability ability = abilityRepository.findById(abilityId).orElse(null);
-        if(ability == null || ability.getId() == null)
-            throw new AbilityNotFoundException("Ability with id: " + abilityId + " not found");
+        this.findById(abilityId);
         abilityRepository.deleteById(abilityId);
         abilityRepository.deleteFromCharacterTable(abilityId);
     }

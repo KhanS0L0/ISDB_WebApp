@@ -1,4 +1,4 @@
-package com.example.exceptions;
+package com.example.exceptions.alreadyExistExceptions;
 
 public class PlotAlreadyExistException extends Exception{
 

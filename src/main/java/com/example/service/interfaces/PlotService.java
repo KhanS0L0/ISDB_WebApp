@@ -1,10 +1,11 @@
 package com.example.service.interfaces;
 
-import com.example.dto.PivotDTO.GenreDTO;
+import com.example.dto.PivotDTO.CharacterDTO;
 import com.example.dto.PivotDTO.PlotDTO;
-import com.example.exceptions.GenreNotFoundException;
-import com.example.exceptions.PlotAlreadyExistException;
-import com.example.exceptions.PlotNotFoundException;
+import com.example.exceptions.notFoundExceptions.CharacterNotFoundException;
+import com.example.exceptions.notFoundExceptions.GenreNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.PlotAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.PlotNotFoundException;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface PlotService {
     PlotDTO addPlot(PlotDTO plotDTO) throws PlotAlreadyExistException;
 
     List<PlotDTO> getAll();
+
+    List<CharacterDTO> getAllPlotCharacters(Long plotId) throws CharacterNotFoundException;
 
     PlotDTO findById(Long plotId) throws PlotNotFoundException;
 

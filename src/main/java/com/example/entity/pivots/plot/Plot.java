@@ -1,5 +1,6 @@
 package com.example.entity.pivots.plot;
 
+import com.example.entity.pivots.characters.Characters;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,4 +29,14 @@ public class Plot {
     )
     private List<Genres> genres;
 
+    @ManyToMany
+    @JoinTable(
+            name = "PLOTS_CHARACTERS",
+            joinColumns = @JoinColumn(name = "PLOT_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "CHARACTER_ID", referencedColumnName = "ID")
+    )
+    private List<Characters> characters;
+
+    @OneToMany(mappedBy = "plot")
+    private List<Pages> pages;
 }

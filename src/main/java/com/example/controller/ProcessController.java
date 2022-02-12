@@ -2,9 +2,9 @@ package com.example.controller;
 
 import com.example.dto.JoinDTO;
 import com.example.dto.ProcessDTO.ProcessDTO;
-import com.example.exceptions.ArtistNotFoundException;
-import com.example.exceptions.ProcessNotFoundException;
-import com.example.exceptions.ScreenwriterNotFoundException;
+import com.example.exceptions.notFoundExceptions.ArtistNotFoundException;
+import com.example.exceptions.notFoundExceptions.ProcessNotFoundException;
+import com.example.exceptions.notFoundExceptions.ScreenwriterNotFoundException;
 import com.example.service.interfaces.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

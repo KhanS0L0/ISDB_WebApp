@@ -3,9 +3,11 @@ package com.example.controller;
 import com.example.dto.JoinDTO;
 import com.example.dto.PivotDTO.AbilityDTO;
 import com.example.dto.PivotDTO.CharacterDTO;
-import com.example.exceptions.AbilityNotFoundException;
-import com.example.exceptions.CharacterAlreadyExistException;
-import com.example.exceptions.CharacterNotFoundException;
+import com.example.dto.PivotDTO.PlotDTO;
+import com.example.exceptions.notFoundExceptions.AbilityNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.CharacterAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.CharacterNotFoundException;
+import com.example.exceptions.notFoundExceptions.PlotNotFoundException;
 import com.example.service.interfaces.CharactersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,16 @@ public class CharacterController {
             return ResponseEntity.ok(characterDTO);
         } catch (CharacterNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/id/{id}/plots", produces = "application/json")
+    public ResponseEntity getAllPlots(@PathVariable("id") Long characterId){
+        try {
+            List<PlotDTO> response = charactersService.findCharacterPlots(characterId);
+            return ResponseEntity.ok(response);
+        } catch (PlotNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

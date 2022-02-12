@@ -1,8 +1,8 @@
 package com.example.service.interfaces;
 
 import com.example.dto.PivotDTO.GenreDTO;
-import com.example.exceptions.GenreAlreadyExistException;
-import com.example.exceptions.GenreNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.GenreAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.GenreNotFoundException;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.exceptions;
+package com.example.exceptions.notFoundExceptions;
 
 public class AbilityNotFoundException extends Exception{
     public AbilityNotFoundException(String message) {

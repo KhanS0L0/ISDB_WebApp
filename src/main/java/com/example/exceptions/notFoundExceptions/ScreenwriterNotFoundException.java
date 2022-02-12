@@ -1,4 +1,4 @@
-package com.example.exceptions;
+package com.example.exceptions.notFoundExceptions;
 
 public class ScreenwriterNotFoundException extends Exception{
     public ScreenwriterNotFoundException(String message) {

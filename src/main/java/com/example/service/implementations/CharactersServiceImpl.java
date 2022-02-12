@@ -2,12 +2,15 @@ package com.example.service.implementations;
 
 import com.example.dto.PivotDTO.AbilityDTO;
 import com.example.dto.PivotDTO.CharacterDTO;
+import com.example.dto.PivotDTO.PlotDTO;
 import com.example.entity.enums.CharactersType;
 import com.example.entity.pivots.characters.Ability;
 import com.example.entity.pivots.characters.Characters;
-import com.example.exceptions.AbilityNotFoundException;
-import com.example.exceptions.CharacterAlreadyExistException;
-import com.example.exceptions.CharacterNotFoundException;
+import com.example.entity.pivots.plot.Plot;
+import com.example.exceptions.notFoundExceptions.AbilityNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.CharacterAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.CharacterNotFoundException;
+import com.example.exceptions.notFoundExceptions.PlotNotFoundException;
 import com.example.repository.AbilityRepository;
 import com.example.repository.CharactersRepository;
 import com.example.service.interfaces.CharactersService;
@@ -35,6 +38,16 @@ public class CharactersServiceImpl implements CharactersService {
         if(character == null)
             throw new CharacterNotFoundException("Character with id: " + characterId + " not found");
         return CharacterDTO.fromCharacter(character);
+    }
+
+    @Override
+    public List<PlotDTO> findCharacterPlots(Long characterId) throws PlotNotFoundException {
+        List<Plot> plots = charactersRepository.findCharacterPlots(characterId);
+        if(plots.size() == 0)
+            throw new PlotNotFoundException("Character does not have any plots");
+        List<PlotDTO> result = new ArrayList<>();
+        plots.forEach(plot -> result.add(PlotDTO.fromPlot(plot)));
+        return result;
     }
 
     @Override

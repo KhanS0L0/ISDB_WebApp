@@ -1,12 +1,14 @@
 package com.example.service.implementations;
 
+import com.example.dto.PivotDTO.CharacterDTO;
 import com.example.dto.PivotDTO.GenreDTO;
 import com.example.dto.PivotDTO.PlotDTO;
-import com.example.entity.pivots.plot.Genres;
+import com.example.entity.pivots.characters.Characters;
 import com.example.entity.pivots.plot.Plot;
-import com.example.exceptions.GenreNotFoundException;
-import com.example.exceptions.PlotAlreadyExistException;
-import com.example.exceptions.PlotNotFoundException;
+import com.example.exceptions.notFoundExceptions.CharacterNotFoundException;
+import com.example.exceptions.notFoundExceptions.GenreNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.PlotAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.PlotNotFoundException;
 import com.example.repository.PlotRepository;
 import com.example.service.interfaces.GenreService;
 import com.example.service.interfaces.PlotService;
@@ -43,6 +45,16 @@ public class PlotServiceImpl implements PlotService {
         List<PlotDTO> plotDTOS = new ArrayList<>();
         plots.forEach(plot -> plotDTOS.add(PlotDTO.fromPlot(plot)));
         return plotDTOS;
+    }
+
+    @Override
+    public List<CharacterDTO> getAllPlotCharacters(Long plotId) throws CharacterNotFoundException {
+        List<Characters> characters = plotRepository.findAllCharacter(plotId);
+        if(characters.size() == 0)
+            throw new CharacterNotFoundException("Plot does not have any characters");
+        List<CharacterDTO> result = new ArrayList<>();
+        characters.forEach(characters1 -> result.add(CharacterDTO.fromCharacter(characters1)));
+        return result;
     }
 
     @Override

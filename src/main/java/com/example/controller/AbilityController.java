@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.dto.PivotDTO.AbilityDTO;
-import com.example.exceptions.AbilityAlreadyExistException;
-import com.example.exceptions.AbilityNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.AbilityAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.AbilityNotFoundException;
 import com.example.service.interfaces.AbilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
 package com.example.service.interfaces;
 
 import com.example.dto.PivotDTO.AbilityDTO;
-import com.example.exceptions.AbilityAlreadyExistException;
-import com.example.exceptions.AbilityNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.AbilityAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.AbilityNotFoundException;
 
 import java.util.List;
 

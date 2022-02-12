@@ -1,9 +1,9 @@
 package com.example.service.interfaces;
 
 import com.example.dto.ProcessDTO.ProcessDTO;
-import com.example.exceptions.ArtistNotFoundException;
-import com.example.exceptions.ProcessNotFoundException;
-import com.example.exceptions.ScreenwriterNotFoundException;
+import com.example.exceptions.notFoundExceptions.ArtistNotFoundException;
+import com.example.exceptions.notFoundExceptions.ProcessNotFoundException;
+import com.example.exceptions.notFoundExceptions.ScreenwriterNotFoundException;
 
 import java.util.List;
 

@@ -3,6 +3,7 @@ package com.example.repository;
 import com.example.entity.enums.CharactersType;
 import com.example.entity.pivots.characters.Ability;
 import com.example.entity.pivots.characters.Characters;
+import com.example.entity.pivots.plot.Plot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,10 @@ public interface CharactersRepository extends JpaRepository<Characters, Long> {
     List<Characters> findAllByCharactersType(CharactersType charactersType);
 
     Optional<Characters> findByNameAndDescription(String name, String description);
+
+    @Transactional
+    @Query(value = "select * from plot join plots_characters pc on plot.id = pc.plot_id where character_id = :id", nativeQuery = true)
+    List<Plot> findCharacterPlots(@Param("id") Long characterId);
 
     @Modifying
     @Transactional

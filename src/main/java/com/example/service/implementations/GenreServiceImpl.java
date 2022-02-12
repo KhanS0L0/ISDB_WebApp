@@ -2,8 +2,8 @@ package com.example.service.implementations;
 
 import com.example.dto.PivotDTO.GenreDTO;
 import com.example.entity.pivots.plot.Genres;
-import com.example.exceptions.GenreAlreadyExistException;
-import com.example.exceptions.GenreNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.GenreAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.GenreNotFoundException;
 import com.example.repository.GenreRepository;
 import com.example.service.interfaces.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;

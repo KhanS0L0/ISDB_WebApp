@@ -2,6 +2,7 @@ package com.example.entity.pivots.characters;
 
 
 import com.example.entity.enums.CharactersType;
+import com.example.entity.pivots.plot.Plot;
 import com.example.entity.pivots.processes.Process;
 import lombok.Data;
 
@@ -36,6 +37,14 @@ public class Characters {
             inverseJoinColumns = @JoinColumn(name = "ABILITY_ID", referencedColumnName = "ID")
     )
     private List<Ability> abilities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "PLOTS_CHARACTERS",
+            joinColumns = @JoinColumn(name = "CHARACTER_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "PLOT_ID", referencedColumnName = "ID")
+    )
+    private List<Plot> plots;
 
 //    @ManyToMany
 //    @JoinTable(

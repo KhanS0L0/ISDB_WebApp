@@ -1,12 +1,14 @@
 package com.example.controller;
 
 import com.example.dto.JoinDTO;
+import com.example.dto.PivotDTO.CharacterDTO;
 import com.example.dto.PivotDTO.GenreDTO;
 import com.example.dto.PivotDTO.PlotDTO;
-import com.example.exceptions.GenreAlreadyExistException;
-import com.example.exceptions.GenreNotFoundException;
-import com.example.exceptions.PlotAlreadyExistException;
-import com.example.exceptions.PlotNotFoundException;
+import com.example.exceptions.alreadyExistExceptions.GenreAlreadyExistException;
+import com.example.exceptions.alreadyExistExceptions.PlotAlreadyExistException;
+import com.example.exceptions.notFoundExceptions.CharacterNotFoundException;
+import com.example.exceptions.notFoundExceptions.GenreNotFoundException;
+import com.example.exceptions.notFoundExceptions.PlotNotFoundException;
 import com.example.service.interfaces.GenreService;
 import com.example.service.interfaces.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,16 @@ public class PlotController {
             List<GenreDTO> genres = genreService.findAllGenres(plotId);
             return ResponseEntity.ok(genres);
         } catch (GenreNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/plots/{id}/characters", produces = "application/json")
+    public ResponseEntity findPlotCharacters(@PathVariable("id") Long plotId){
+        try {
+            List<CharacterDTO> response = plotService.getAllPlotCharacters(plotId);
+            return ResponseEntity.ok(response);
+        } catch (CharacterNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
