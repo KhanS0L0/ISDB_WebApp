@@ -24,6 +24,9 @@ public class Pages {
     @JoinColumn(name = "PLOT_ID", referencedColumnName = "ID")
     private Plot plot;
 
+    @OneToMany(mappedBy = "page")
+    private List<Text> texts;
+
     @ManyToMany
     @JoinTable(
             name = "PAGES_EFFECTS",

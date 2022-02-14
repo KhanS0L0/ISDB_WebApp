@@ -29,4 +29,13 @@ public class Effect {
             inverseJoinColumns = @JoinColumn(name = "PAGE_ID", referencedColumnName = "ID")
     )
     private List<Pages> pages;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "TEXTS_EFFECTS",
+            joinColumns = @JoinColumn(name = "EFFECT_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "TEXT_ID", referencedColumnName = "ID")
+    )
+    private List<Text> texts;
 }
